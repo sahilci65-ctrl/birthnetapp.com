@@ -19,7 +19,16 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--white); color: var(--text); }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+    /* SCROLL ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
 
     /* NAV */
     nav {
@@ -35,8 +44,8 @@
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-links a { text-decoration: none; color: var(--muted); font-size: 15px; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: var(--primary); }
-    .nav-cta { background: var(--primary); color: #fff; padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
-    .nav-cta:hover { background: var(--primary-dark); }
+    .nav-cta { background: var(--primary); color: #fff !important; padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; }
+    .nav-cta:hover { background: var(--primary-dark) !important; }
 
     /* HERO */
     .hero {
@@ -49,15 +58,44 @@
     .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; max-width: 700px; color: var(--text); }
     .hero h1 span { color: var(--primary); }
     .hero p { margin-top: 20px; font-size: 20px; color: var(--muted); max-width: 520px; line-height: 1.6; }
-    .hero-btns { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
-    .btn-primary { background: var(--primary); color: #fff; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 24px rgba(99,102,241,0.35); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.45); }
-    .btn-secondary { background: #fff; color: var(--text); padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; border: 2px solid var(--border); transition: border-color 0.2s; }
+    .hero-btns { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; align-items: center; }
+    .btn-play {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #000; color: #fff;
+      padding: 12px 24px; border-radius: 14px;
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .btn-play:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.35); }
+    .btn-play-icon { width: 28px; height: 28px; }
+    .btn-play-text { text-align: left; }
+    .btn-play-text small { display: block; font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 400; }
+    .btn-play-text strong { display: block; font-size: 17px; font-weight: 700; }
+    .btn-secondary { background: #fff; color: var(--text); padding: 14px 28px; border-radius: 14px; font-size: 15px; font-weight: 700; text-decoration: none; border: 2px solid var(--border); transition: border-color 0.2s, color 0.2s; }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-    .hero-screens { margin-top: 60px; display: flex; gap: 16px; align-items: flex-end; justify-content: center; }
-    .hero-screens img { height: 520px; border-radius: 28px; box-shadow: 0 24px 64px rgba(0,0,0,0.15); }
-    .hero-screens img:nth-child(2) { height: 560px; }
-    .hero-screens img:first-child, .hero-screens img:last-child { opacity: 0.85; }
+
+    /* PHONE MOCKUPS */
+    .hero-screens { margin-top: 60px; display: flex; gap: 20px; align-items: flex-end; justify-content: center; }
+    .phone-mockup {
+      position: relative;
+      background: #1a1a1a;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.22), inset 0 0 0 2px #333;
+    }
+    .phone-mockup::before {
+      content: '';
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 6px;
+      background: #333; border-radius: 3px; z-index: 2;
+    }
+    .phone-mockup img {
+      display: block;
+      border-radius: 32px;
+      width: 200px;
+    }
+    .phone-mockup.center img { width: 220px; }
+    .phone-mockup.side { opacity: 0.82; }
 
     /* FEATURES */
     .features { padding: 100px 40px; max-width: 1100px; margin: 0 auto; }
@@ -74,12 +112,12 @@
     /* SCREENSHOTS */
     .screenshots { background: var(--bg); padding: 100px 40px; }
     .screenshots-inner { max-width: 1100px; margin: 0 auto; }
-    .screenshots-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-    .screenshots-scroll::-webkit-scrollbar { height: 4px; }
-    .screenshots-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
-    .screenshots-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+    .screenshots-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .screenshots-scroll::-webkit-scrollbar { height: 5px; }
+    .screenshots-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
+    .screenshots-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
     .screenshot-item { flex-shrink: 0; scroll-snap-align: start; }
-    .screenshot-item img { height: 480px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.12); display: block; }
+    .screenshot-item .phone-mockup img { width: 180px; }
     .screenshot-item p { text-align: center; margin-top: 12px; font-size: 13px; color: var(--muted); font-weight: 600; }
 
     /* LANGUAGES */
@@ -91,8 +129,15 @@
     .cta { background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%); padding: 100px 40px; text-align: center; }
     .cta h2 { font-size: 44px; font-weight: 800; color: #fff; margin-bottom: 16px; }
     .cta p { font-size: 18px; color: rgba(255,255,255,0.8); max-width: 480px; margin: 0 auto 40px; }
-    .btn-white { background: #fff; color: var(--primary); padding: 16px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transition: transform 0.2s; }
-    .btn-white:hover { transform: translateY(-2px); }
+    .btn-play-white {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #fff; color: #000;
+      padding: 12px 24px; border-radius: 14px;
+      text-decoration: none; transition: transform 0.2s;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    .btn-play-white:hover { transform: translateY(-2px); }
+    .btn-play-white .btn-play-text small { color: rgba(0,0,0,0.5); }
 
     /* FOOTER */
     footer { background: var(--text); color: rgba(255,255,255,0.5); padding: 48px 40px; }
@@ -101,7 +146,6 @@
     .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
     .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; transition: color 0.2s; }
     .footer-links a:hover { color: #fff; }
-    .footer-copy { font-size: 13px; }
 
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -109,8 +153,10 @@
       .hero { padding: 60px 20px 0; }
       .hero h1 { font-size: 36px; }
       .hero p { font-size: 17px; }
-      .hero-screens img { height: 320px; }
-      .hero-screens img:nth-child(2) { height: 360px; }
+      .phone-mockup img { width: 140px !important; }
+      .phone-mockup.center img { width: 160px !important; }
+      .phone-mockup { border-radius: 32px; padding: 9px; }
+      .phone-mockup::before { width: 60px; }
       .features { padding: 60px 20px; }
       .features-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 28px; }
@@ -140,54 +186,64 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-badge">🎂 Available on Google Play</div>
-    <h1>Never Miss a <span>Birthday</span> Again</h1>
-    <p>BirthNet tracks birthdays and special days of people you care about — with beautiful calendar views, smart reminders, and automatic contact sync.</p>
-    <div class="hero-btns">
-      <a class="btn-primary" href="https://play.google.com/store/apps/details?id=com.birthnet.app">
-        ▶ Download Free on Google Play
+    <div class="hero-badge reveal">🎂 Available on Google Play</div>
+    <h1 class="reveal reveal-delay-1">Never Miss a <span>Birthday</span> Again</h1>
+    <p class="reveal reveal-delay-2">BirthNet tracks birthdays and special days of people you care about — with beautiful calendar views, smart reminders, and automatic contact sync.</p>
+    <div class="hero-btns reveal reveal-delay-3">
+      <a class="btn-play" href="https://play.google.com/store/apps/details?id=com.birthnet.app">
+        <svg class="btn-play-icon" viewBox="0 0 24 24" fill="white"><path d="M3.18 23.76c.33.18.7.2 1.06.03l13.2-7.62-2.9-2.9-11.36 10.49zm-1.05-20.4C2.05 3.6 2 3.9 2 4.22v15.56c0 .32.05.62.13.9l.1.1L11.1 12l-.1-.1-8.87-8.54zm19.1 8.97l-2.58-1.49-3.2 3.2 3.2 3.2 2.6-1.5c.74-.43.74-1.98-.02-2.41zM4.24.24C3.88.07 3.5.1 3.18.28L14.57 11.67l-2.9 2.9 11.36-10.5L4.24.24z"/></svg>
+        <div class="btn-play-text">
+          <small>GET IT ON</small>
+          <strong>Google Play</strong>
+        </div>
       </a>
       <a class="btn-secondary" href="#features">See Features</a>
     </div>
-    <div class="hero-screens">
-      <img src="images/screen-yearly.png" alt="Yearly View" />
-      <img src="images/screen-calendar.png" alt="Calendar" />
-      <img src="images/screen-directory.png" alt="Directory" />
+    <div class="hero-screens reveal reveal-delay-4">
+      <div class="phone-mockup side">
+        <img src="images/screen-yearly.png" alt="Yearly View" />
+      </div>
+      <div class="phone-mockup center">
+        <img src="images/screen-calendar.png" alt="Calendar" />
+      </div>
+      <div class="phone-mockup side">
+        <img src="images/screen-directory.png" alt="Directory" />
+      </div>
     </div>
   </section>
 
   <!-- FEATURES -->
   <section class="features" id="features">
-    <p class="section-label">Why BirthNet?</p>
-    <h2 class="section-title">Everything you need to celebrate</h2>
-    <p class="section-sub">Simple, beautiful, and packed with features that make every birthday unforgettable.</p>
+    <p class="section-label reveal">Why BirthNet?</p>
+    <h2 class="section-title reveal reveal-delay-1">Everything you need to celebrate</h2>
+    <p class="section-sub reveal reveal-delay-2">Simple, beautiful, and packed with features that make every birthday unforgettable.</p>
     <div class="features-grid">
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-1">
         <div class="feature-icon">📅</div>
         <h3>Birthday Calendar</h3>
         <p>Monthly and yearly calendar views showing all upcoming birthdays and special days at a glance.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-2">
         <div class="feature-icon">🔔</div>
         <h3>Smart Reminders</h3>
         <p>Get notified 1 day before or on the day of every birthday. Never be caught off guard again.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-3">
         <div class="feature-icon">👥</div>
         <h3>Contact Sync</h3>
         <p>Automatically discover friends who use BirthNet. Contact data stays on your device — never uploaded.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-1">
         <div class="feature-icon">🎉</div>
         <h3>Special Days</h3>
         <p>Track anniversaries, graduations, and any custom event with icons and yearly repeat reminders.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-2">
         <div class="feature-icon">📸</div>
         <h3>Birthday Stories</h3>
         <p>Share a birthday photo story visible to your contacts for 24 hours on your special day.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card reveal reveal-delay-3">
         <div class="feature-icon">🌍</div>
         <h3>8 Languages</h3>
         <p>Full support for English, Turkish, French, German, Spanish, Portuguese, and Russian.</p>
@@ -198,36 +254,36 @@
   <!-- SCREENSHOTS -->
   <section class="screenshots" id="screenshots">
     <div class="screenshots-inner">
-      <p class="section-label">App Screenshots</p>
-      <h2 class="section-title">Beautiful by design</h2>
-      <p class="section-sub">Clean, modern UI designed for everyday use.</p>
-      <div class="screenshots-scroll">
+      <p class="section-label reveal">App Screenshots</p>
+      <h2 class="section-title reveal reveal-delay-1">Beautiful by design</h2>
+      <p class="section-sub reveal reveal-delay-2">Clean, modern UI designed for everyday use.</p>
+      <div class="screenshots-scroll reveal reveal-delay-3">
         <div class="screenshot-item">
-          <img src="images/screen-calendar.png" alt="Monthly Calendar" />
+          <div class="phone-mockup"><img src="images/screen-calendar.png" alt="Monthly Calendar" /></div>
           <p>Monthly Calendar</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-yearly.png" alt="Yearly View" />
+          <div class="phone-mockup"><img src="images/screen-yearly.png" alt="Yearly View" /></div>
           <p>Yearly View</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-directory.png" alt="Directory" />
+          <div class="phone-mockup"><img src="images/screen-directory.png" alt="Directory" /></div>
           <p>Directory</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-special-day.png" alt="Special Day" />
+          <div class="phone-mockup"><img src="images/screen-special-day.png" alt="Special Day" /></div>
           <p>Add Special Day</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-notifications.png" alt="Notifications" />
+          <div class="phone-mockup"><img src="images/screen-notifications.png" alt="Notifications" /></div>
           <p>Notifications & Sync</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-celebration.png" alt="Celebration" />
+          <div class="phone-mockup"><img src="images/screen-celebration.png" alt="Celebration" /></div>
           <p>Birthday Celebration</p>
         </div>
         <div class="screenshot-item">
-          <img src="images/screen-settings.png" alt="Settings" />
+          <div class="phone-mockup"><img src="images/screen-settings.png" alt="Settings" /></div>
           <p>Settings</p>
         </div>
       </div>
@@ -236,9 +292,9 @@
 
   <!-- LANGUAGES -->
   <section class="languages">
-    <p class="section-label">Multilingual</p>
-    <h2 class="section-title">Available in 8 languages</h2>
-    <div class="lang-badges">
+    <p class="section-label reveal">Multilingual</p>
+    <h2 class="section-title reveal reveal-delay-1">Available in 8 languages</h2>
+    <div class="lang-badges reveal reveal-delay-2">
       <span class="lang-badge">🇬🇧 English</span>
       <span class="lang-badge">🇹🇷 Türkçe</span>
       <span class="lang-badge">🇫🇷 Français</span>
@@ -252,9 +308,15 @@
 
   <!-- CTA -->
   <section class="cta">
-    <h2>Start celebrating today 🎂</h2>
-    <p>Free to download. No account setup needed — just your phone number.</p>
-    <a class="btn-white" href="https://play.google.com/store/apps/details?id=com.birthnet.app">Download on Google Play</a>
+    <h2 class="reveal">Start celebrating today 🎂</h2>
+    <p class="reveal reveal-delay-1">Free to download. No account setup needed — just your phone number.</p>
+    <a class="btn-play-white reveal reveal-delay-2" href="https://play.google.com/store/apps/details?id=com.birthnet.app">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="black"><path d="M3.18 23.76c.33.18.7.2 1.06.03l13.2-7.62-2.9-2.9-11.36 10.49zm-1.05-20.4C2.05 3.6 2 3.9 2 4.22v15.56c0 .32.05.62.13.9l.1.1L11.1 12l-.1-.1-8.87-8.54zm19.1 8.97l-2.58-1.49-3.2 3.2 3.2 3.2 2.6-1.5c.74-.43.74-1.98-.02-2.41zM4.24.24C3.88.07 3.5.1 3.18.28L14.57 11.67l-2.9 2.9 11.36-10.5L4.24.24z"/></svg>
+      <div class="btn-play-text">
+        <small>GET IT ON</small>
+        <strong>Google Play</strong>
+      </div>
+    </a>
   </section>
 
   <!-- FOOTER -->
@@ -266,9 +328,29 @@
         <a href="child-safety.html">Child Safety</a>
         <a href="delete-account.html">Delete Account</a>
       </div>
-      <p class="footer-copy">© 2025 BirthNet. Individual developer.</p>
+      <p style="font-size:13px;">© 2025 BirthNet. Individual developer.</p>
     </div>
   </footer>
+
+  <script>
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Hero elements visible immediately
+    document.querySelectorAll('.hero .reveal').forEach(el => {
+      setTimeout(() => el.classList.add('visible'), 100);
+    });
+  </script>
 
 </body>
 </html>
