@@ -4,73 +4,271 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BirthNet – Never Miss a Birthday</title>
+  <meta name="description" content="BirthNet helps you track birthdays and special days of people you care about. Calendar views, smart reminders, and contact sync." />
   <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #eef2ff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --radius: 20px;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f6f7f8; color: #1e293b; }
-    header { background: #fff; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; }
-    .logo { font-size: 22px; font-weight: 800; color: #6366f1; }
-    nav a { margin-left: 24px; text-decoration: none; color: #64748b; font-size: 15px; }
-    nav a:hover { color: #6366f1; }
-    .hero { text-align: center; padding: 80px 24px 60px; }
-    .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.15; color: #0f172a; }
-    .hero h1 span { color: #6366f1; }
-    .hero p { margin-top: 20px; font-size: 20px; color: #475569; max-width: 560px; margin: 20px auto 0; }
-    .badge { display: inline-block; margin-top: 40px; background: #6366f1; color: #fff; padding: 14px 32px; border-radius: 50px; font-size: 17px; font-weight: 700; text-decoration: none; }
-    .features { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; padding: 60px 24px; max-width: 960px; margin: 0 auto; }
-    .feature { background: #fff; border-radius: 16px; padding: 28px; width: 260px; border: 1px solid #e2e8f0; }
-    .feature .icon { font-size: 32px; margin-bottom: 12px; }
-    .feature h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-    .feature p { font-size: 14px; color: #64748b; line-height: 1.6; }
-    footer { text-align: center; padding: 40px 24px; color: #94a3b8; font-size: 14px; border-top: 1px solid #e2e8f0; background: #fff; }
-    footer a { color: #6366f1; text-decoration: none; margin: 0 12px; }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--white); color: var(--text); }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 10px; }
+    .nav-logo span { font-size: 20px; font-weight: 800; color: var(--primary); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 15px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta { background: var(--primary); color: #fff; padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--primary-dark); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #eef2ff 0%, #f0fdf4 100%);
+      padding: 80px 40px 0;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      overflow: hidden;
+    }
+    .hero-badge { background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 50px; margin-bottom: 24px; letter-spacing: 0.5px; }
+    .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; max-width: 700px; color: var(--text); }
+    .hero h1 span { color: var(--primary); }
+    .hero p { margin-top: 20px; font-size: 20px; color: var(--muted); max-width: 520px; line-height: 1.6; }
+    .hero-btns { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: var(--primary); color: #fff; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 24px rgba(99,102,241,0.35); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.45); }
+    .btn-secondary { background: #fff; color: var(--text); padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; border: 2px solid var(--border); transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .hero-screens { margin-top: 60px; display: flex; gap: 16px; align-items: flex-end; justify-content: center; }
+    .hero-screens img { height: 520px; border-radius: 28px; box-shadow: 0 24px 64px rgba(0,0,0,0.15); }
+    .hero-screens img:nth-child(2) { height: 560px; }
+    .hero-screens img:first-child, .hero-screens img:last-child { opacity: 0.85; }
+
+    /* FEATURES */
+    .features { padding: 100px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-label { text-align: center; font-size: 13px; font-weight: 700; color: var(--primary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .section-title { text-align: center; font-size: 40px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+    .section-sub { text-align: center; font-size: 18px; color: var(--muted); max-width: 520px; margin: 0 auto 64px; line-height: 1.6; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card { background: var(--bg); border-radius: var(--radius); padding: 32px; border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .feature-icon { width: 52px; height: 52px; background: var(--primary-light); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px; }
+    .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+    /* SCREENSHOTS */
+    .screenshots { background: var(--bg); padding: 100px 40px; }
+    .screenshots-inner { max-width: 1100px; margin: 0 auto; }
+    .screenshots-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .screenshots-scroll::-webkit-scrollbar { height: 4px; }
+    .screenshots-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
+    .screenshots-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+    .screenshot-item { flex-shrink: 0; scroll-snap-align: start; }
+    .screenshot-item img { height: 480px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.12); display: block; }
+    .screenshot-item p { text-align: center; margin-top: 12px; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    /* LANGUAGES */
+    .languages { padding: 80px 40px; max-width: 800px; margin: 0 auto; text-align: center; }
+    .lang-badges { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 32px; }
+    .lang-badge { background: var(--bg); border: 1px solid var(--border); border-radius: 50px; padding: 10px 20px; font-size: 15px; font-weight: 600; color: var(--text); }
+
+    /* CTA */
+    .cta { background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%); padding: 100px 40px; text-align: center; }
+    .cta h2 { font-size: 44px; font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .cta p { font-size: 18px; color: rgba(255,255,255,0.8); max-width: 480px; margin: 0 auto 40px; }
+    .btn-white { background: #fff; color: var(--primary); padding: 16px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transition: transform 0.2s; }
+    .btn-white:hover { transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer { background: var(--text); color: rgba(255,255,255,0.5); padding: 48px 40px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .footer-logo { font-size: 20px; font-weight: 800; color: #fff; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 13px; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 20px 0; }
+      .hero h1 { font-size: 36px; }
+      .hero p { font-size: 17px; }
+      .hero-screens img { height: 320px; }
+      .hero-screens img:nth-child(2) { height: 360px; }
+      .features { padding: 60px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 28px; }
+      .screenshots { padding: 60px 20px; }
+      .cta { padding: 60px 20px; }
+      .cta h2 { font-size: 30px; }
+      footer { padding: 40px 20px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">🎂 BirthNet</div>
-    <nav>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="child-safety.html">Child Safety</a>
-      <a href="delete-account.html">Delete Account</a>
-    </nav>
-  </header>
 
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="images/icon.png" alt="BirthNet" />
+      <span>BirthNet</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.birthnet.app">Download</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
   <section class="hero">
+    <div class="hero-badge">🎂 Available on Google Play</div>
     <h1>Never Miss a <span>Birthday</span> Again</h1>
-    <p>BirthNet helps you track birthdays and special days of people you care about — with calendar views, reminders, and more.</p>
-    <a class="badge" href="https://play.google.com/store/apps/details?id=com.birthnet.app">Download on Google Play</a>
-  </section>
-
-  <section class="features">
-    <div class="feature">
-      <div class="icon">📅</div>
-      <h3>Birthday Calendar</h3>
-      <p>See all upcoming birthdays in a beautiful monthly and yearly calendar view.</p>
+    <p>BirthNet tracks birthdays and special days of people you care about — with beautiful calendar views, smart reminders, and automatic contact sync.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://play.google.com/store/apps/details?id=com.birthnet.app">
+        ▶ Download Free on Google Play
+      </a>
+      <a class="btn-secondary" href="#features">See Features</a>
     </div>
-    <div class="feature">
-      <div class="icon">🔔</div>
-      <h3>Smart Reminders</h3>
-      <p>Get notified 1 day before or on the day of every birthday and special event.</p>
-    </div>
-    <div class="feature">
-      <div class="icon">👥</div>
-      <h3>Contact Sync</h3>
-      <p>Automatically discover friends who use BirthNet from your contact list.</p>
-    </div>
-    <div class="feature">
-      <div class="icon">🌍</div>
-      <h3>8 Languages</h3>
-      <p>Available in English, Turkish, French, German, Spanish, Portuguese, and Russian.</p>
+    <div class="hero-screens">
+      <img src="images/screen-yearly.png" alt="Yearly View" />
+      <img src="images/screen-calendar.png" alt="Calendar" />
+      <img src="images/screen-directory.png" alt="Directory" />
     </div>
   </section>
 
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <p class="section-label">Why BirthNet?</p>
+    <h2 class="section-title">Everything you need to celebrate</h2>
+    <p class="section-sub">Simple, beautiful, and packed with features that make every birthday unforgettable.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Birthday Calendar</h3>
+        <p>Monthly and yearly calendar views showing all upcoming birthdays and special days at a glance.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Smart Reminders</h3>
+        <p>Get notified 1 day before or on the day of every birthday. Never be caught off guard again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Contact Sync</h3>
+        <p>Automatically discover friends who use BirthNet. Contact data stays on your device — never uploaded.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎉</div>
+        <h3>Special Days</h3>
+        <p>Track anniversaries, graduations, and any custom event with icons and yearly repeat reminders.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Birthday Stories</h3>
+        <p>Share a birthday photo story visible to your contacts for 24 hours on your special day.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>8 Languages</h3>
+        <p>Full support for English, Turkish, French, German, Spanish, Portuguese, and Russian.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="screenshots" id="screenshots">
+    <div class="screenshots-inner">
+      <p class="section-label">App Screenshots</p>
+      <h2 class="section-title">Beautiful by design</h2>
+      <p class="section-sub">Clean, modern UI designed for everyday use.</p>
+      <div class="screenshots-scroll">
+        <div class="screenshot-item">
+          <img src="images/screen-calendar.png" alt="Monthly Calendar" />
+          <p>Monthly Calendar</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-yearly.png" alt="Yearly View" />
+          <p>Yearly View</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-directory.png" alt="Directory" />
+          <p>Directory</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-special-day.png" alt="Special Day" />
+          <p>Add Special Day</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-notifications.png" alt="Notifications" />
+          <p>Notifications & Sync</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-celebration.png" alt="Celebration" />
+          <p>Birthday Celebration</p>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/screen-settings.png" alt="Settings" />
+          <p>Settings</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section class="languages">
+    <p class="section-label">Multilingual</p>
+    <h2 class="section-title">Available in 8 languages</h2>
+    <div class="lang-badges">
+      <span class="lang-badge">🇬🇧 English</span>
+      <span class="lang-badge">🇹🇷 Türkçe</span>
+      <span class="lang-badge">🇫🇷 Français</span>
+      <span class="lang-badge">🇩🇪 Deutsch</span>
+      <span class="lang-badge">🇪🇸 Español</span>
+      <span class="lang-badge">🇵🇹 Português</span>
+      <span class="lang-badge">🇧🇷 Português BR</span>
+      <span class="lang-badge">🇷🇺 Русский</span>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Start celebrating today 🎂</h2>
+    <p>Free to download. No account setup needed — just your phone number.</p>
+    <a class="btn-white" href="https://play.google.com/store/apps/details?id=com.birthnet.app">Download on Google Play</a>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    <p>© 2025 BirthNet. Developed by an individual developer.</p>
-    <p style="margin-top:12px;">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="child-safety.html">Child Safety</a>
-      <a href="delete-account.html">Delete Account</a>
-    </p>
+    <div class="footer-inner">
+      <div class="footer-logo">🎂 BirthNet</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="child-safety.html">Child Safety</a>
+        <a href="delete-account.html">Delete Account</a>
+      </div>
+      <p class="footer-copy">© 2025 BirthNet. Individual developer.</p>
+    </div>
   </footer>
+
 </body>
 </html>
